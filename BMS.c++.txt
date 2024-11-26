@@ -1,0 +1,165 @@
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Account {
+public:
+    int accountNumber;
+    std::string accountHolderName;
+    double balance;
+
+    Account(int accNum, std::string name) {
+        accountNumber = accNum;
+        accountHolderName = name;
+        balance = 0.0;
+    }
+};
+
+class BankManagementSystem {
+private:
+    std::vector<Account> accounts;
+    int nextAccountNumber;
+
+public:
+    BankManagementSystem() : nextAccountNumber(1) {}
+
+    void createAccount() {
+        std::string name;
+        std::cout << "Enter Account Holder's Name: ";
+        std::cin >> name;
+
+        accounts.push_back(Account(nextAccountNumber++, name));
+        std::cout << "Account created successfully. Account Number: " << nextAccountNumber - 1 << std::endl;
+    }
+
+    void depositAmount() {
+        int accNum;
+        double amount;
+        std::cout << "Enter Account Number: ";
+        std::cin >> accNum;
+
+        std::cout << "Enter Amount to Deposit: ";
+        std::cin >> amount;
+
+        for (auto &acc : accounts) {
+            if (acc.accountNumber == accNum) {
+                acc.balance += amount;
+                std::cout << "Amount Deposited. New Balance: " << acc.balance << std::endl;
+                return;
+            }
+        }
+        std::cout << "Account not found!" << std::endl;
+    }
+
+    void withdrawAmount() {
+        int accNum;
+        double amount;
+        std::cout << "Enter Account Number: ";
+        std::cin >> accNum;
+
+        std::cout << "Enter Amount to Withdraw: ";
+        std::cin >> amount;
+
+        for (auto &acc : accounts) {
+            if (acc.accountNumber == accNum) {
+                if (amount <= acc.balance) {
+                    acc.balance -= amount;
+                    std::cout << "Amount Withdrawn. New Balance: " << acc.balance << std::endl;
+                } else {
+                    std::cout << "Insufficient balance!" << std::endl;
+                }
+                return;
+            }
+        }
+        std::cout << "Account not found!" << std::endl;
+    }
+
+    void balanceEnquiry() {
+        int accNum;
+        std::cout << "Enter Account Number: ";
+        std::cin >> accNum;
+
+        for (const auto &acc : accounts) {
+            if (acc.accountNumber == accNum) {
+                std::cout << "Account Balance: " << acc.balance << std::endl;
+                return;
+            }
+        }
+        std::cout << "Account not found!" << std::endl;
+    }
+
+    void listAllAccounts() {
+        std::cout << "List of All Account Holders:" << std::endl;
+        for (const auto &acc : accounts) {
+            std::cout << "Account Number: " << acc.accountNumber << ", Name: " << acc.accountHolderName << ", Balance: " << acc.balance << std::endl;
+        }
+    }
+
+    void closeAccount() {
+        int accNum;
+        std::cout << "Enter Account Number to Close: ";
+        std::cin >> accNum;
+
+        for (auto it = accounts.begin(); it != accounts.end(); ++it) {
+            if (it->accountNumber == accNum) {
+                accounts.erase(it);
+                std::cout << "Account closed successfully." << std::endl;
+                return;
+            }
+        }
+        std::cout << "Account not found!" << std::endl;
+    }
+
+    void modifyAccount() {
+        int accNum;
+        std::string newName;
+        std::cout << "Enter Account Number to Modify: ";
+        std::cin >> accNum;
+
+        for (auto &acc : accounts) {
+            if (acc.accountNumber == accNum) {
+                std::cout << "Enter new Account Holder's Name: ";
+                std::cin >> newName;
+                acc.accountHolderName = newName;
+                std::cout << "Account modified successfully." << std::endl;
+                return;
+            }
+        }
+        std::cout << "Account not found!" << std::endl;
+    }
+
+    void displayMenu() {
+        int choice;
+        do {
+            std::cout << "\nMain Menu:\n";
+            std::cout << "1. New Account\n";
+            std::cout << "2. Deposit Amount\n";
+            std::cout << "3. Withdraw Amount\n";
+            std::cout << "4. Balance Enquiry\n";
+            std::cout << "5. All Account Holder List\n";
+            std::cout << "6. Close an Account\n";
+            std::cout << "7. Modify an Account\n";
+            std::cout << "8. Exit\n";
+            std::cout << "Select your option: ";
+            std::cin >> choice;
+
+            switch (choice) {
+                case 1: createAccount(); break;
+                case 2: depositAmount(); break;
+                case 3: withdrawAmount(); break;
+                case 4: balanceEnquiry(); break;
+                case 5: listAllAccounts(); break;
+                case 6: closeAccount(); break;
+                case 7: modifyAccount(); break;
+                case 8: std::cout << "Exiting the system. Goodbye!" << std::endl; break;
+                default: std::cout << "Invalid choice. Please try again." << std::endl; break;
+            }
+        } while (choice != 8);
+    }
+};
+
+int main() {
+    BankManagementSystem bms;
+    bms.displayMenu();
+    return 0;
+}

@@ -1,0 +1,12 @@
+Output
+
+Main Menu:
+1. New Account
+2. Deposit Amount
+3. Withdraw Amount
+4. Balance Enquiry
+5. All Account Holder List
+6. Close an Account
+7. Modify an Account
+8. Exit
+Select your option: 
